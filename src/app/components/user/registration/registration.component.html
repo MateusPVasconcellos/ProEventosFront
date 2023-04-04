@@ -17,7 +17,7 @@
         <div class="form-group col-sm-6">
           <label>Primeiro Nome</label>
           <input type="text" class="form-control" placeholder="Insira o Primeiro nome" formControlName="primeiroNome"
-                 [ngClass]="{'is-invalid': f.primeiroNome.errors && f.primeiroNome.touched}" />
+                 [ngClass]="cv.Validator(f.primeiroNome)" />
         </div>
         <div class="invalid-feedback" [ngClass]="{'d-block': f.primeiroNome.hasError('required') && f.primeiroNome.touched}">
           Primeiro nome é obrigatorio
@@ -28,7 +28,7 @@
         <div class="form-group col-sm-6">
           <label>Último nome</label>
           <input type="text" class="form-control" placeholder="Insira o Último nome" formControlName="ultimoNome"
-                 [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}"/>
+                 [ngClass]="cv.Validator(f.ultimoNome)" />
         </div>
         <div class="invalid-feedback" [ngClass]="{'d-block': f.ultimoNome.hasError('required') && f.ultimoNome.touched}">
           Ultimo nome é obrigatorio
@@ -39,8 +39,8 @@
       </div>
       <div class="form-group">
         <label for="">Email:</label>
-        <input class="form-control" type="text" placeholder="Insira o Nome Completo" formControlName="email"
-               [ngClass]="{'is-invalid': f.email.errors && f.email.touched}" />
+        <input class="form-control" type="text" placeholder="Insira e-mail válido" formControlName="email"
+               [ngClass]="cv.Validator(f.email)" />
         <div class="invalid-feedback" *ngIf="(f.email.hasError('required') || f.email.hasError('email')) && f.email.touched">
           Entre com um email válido
         </div>
@@ -48,7 +48,7 @@
       <div class="form-group">
         <label for="">Usuario:</label>
         <input class="form-control" type="text" placeholder="Insira o nome de Usuário" formControlName="usuario"
-               [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}"/>
+               [ngClass]="cv.Validator(f.usuario)"/>
       </div>
         <div class="invalid-feedback" [ngClass]="{'d-block': f.usuario.hasError('required') && f.usuario.touched}">
           Usuario é obrigatorio
@@ -60,7 +60,7 @@
           <div class="form-group col-sm-6">
             <label for="">Senha:</label>
             <input class="form-control" type="password" placeholder="Digite uma Senha" formControlName="senha"
-                   [ngClass]="{'is-invalid': f.senha.errors && f.senha.touched}" />
+                   [ngClass]="cv.Validator(f.senha)" />
           </div>
           <div class="invalid-feedback" [ngClass]="{'d-block': f.senha.hasError('required') && f.senha.touched}">
             Senha é obrigatorio
@@ -71,7 +71,7 @@
           <div class="form-group col-sm-6">
             <label for="">Confirmar Senha:</label>
             <input class="form-control" type="password" placeholder="Confirme a Senha" formControlName="confirmarSenha"
-                   [ngClass]="{'is-invalid': f.confirmarSenha.errors && f.confirmarSenha.touched}" />
+                   [ngClass]="cv.Validator(f.confirmarSenha)" />
           </div>
           <div class="invalid-feedback" [ngClass]="{'d-block': f.confirmarSenha.hasError('mustMatch')}">
             Confirmação de senha incorreta
@@ -98,6 +98,5 @@
         </div>
       </div>
     </form>
-
   </div>
 </div>

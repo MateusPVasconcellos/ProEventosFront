@@ -1,49 +1,64 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { CssValidatorService } from "../../../helpers/css-validator.service";
 
 @Component({
-  selector: 'app-evento-detalhe',
-  templateUrl: './evento-detalhe.component.html',
-  styleUrls: ['./evento-detalhe.component.scss']
+    selector: "app-evento-detalhe",
+    templateUrl: "./evento-detalhe.component.html",
+    styleUrls: ["./evento-detalhe.component.scss"],
 })
 export class EventoDetalheComponent implements OnInit {
-  form!: FormGroup;
+    form!: FormGroup;
 
-  get f(): any {
-    return this.form.controls;
-  }
+    get f(): any {
+        return this.form.controls;
+    }
 
-  constructor(private fb: FormBuilder) { }
+    constructor(private fb: FormBuilder, public cv: CssValidatorService) {}
 
-  private validation(): void {
-    this.form = this.fb.group({
-      local: ['',
-        [Validators.required, Validators.minLength(2), Validators.maxLength(50)]
-      ],
-      dataEvento: ['', Validators.required],
-      tema: ['',
-        [Validators.required, Validators.minLength(4), Validators.maxLength(50)]
-      ],
-      qtdPessoas: ['',
-        [Validators.required, Validators.pattern("^[0-9]*$"), Validators.max(1200)]
-      ],
-      imagemUrl: ['', Validators.required],
-      telefone: ['', Validators.required],
-      email: ['', [Validators.email, Validators.required]]
-    });
-  }
+    private validation(): void {
+        this.form = this.fb.group({
+            local: [
+                "",
+                [
+                    Validators.required,
+                    Validators.minLength(2),
+                    Validators.maxLength(50),
+                ],
+            ],
+            dataEvento: ["", Validators.required],
+            tema: [
+                "",
+                [
+                    Validators.required,
+                    Validators.minLength(4),
+                    Validators.maxLength(50),
+                ],
+            ],
+            qtdPessoas: [
+                "",
+                [
+                    Validators.required,
+                    Validators.pattern("^[0-9]*$"),
+                    Validators.max(1200),
+                ],
+            ],
+            imagemUrl: ["", Validators.required],
+            telefone: ["", Validators.required],
+            email: ["", [Validators.email, Validators.required]],
+        });
+    }
 
-  public resetForm(event: any): void {
-    event.preventDefault();
-    this.form.reset();
-  }
+    public resetForm(event: any): void {
+        event.preventDefault();
+        this.form.reset();
+    }
 
-  public onSubmit(): void {
-    return;
-  }
+    public onSubmit(): void {
+        return;
+    }
 
-  ngOnInit(): void {
-    this.validation();
-  }
-
+    ngOnInit(): void {
+        this.validation();
+    }
 }

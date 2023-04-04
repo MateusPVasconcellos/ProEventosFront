@@ -44,7 +44,7 @@
           </div>
           <div class="form-group col">
             <label>Título</label>
-            <select class="form-control" formControlName="titulo" [ngClass]="{'is-invalid': f.titulo.errors && f.titulo.touched}">
+            <select class="form-control" formControlName="titulo" [ngClass]="cv.Validator(f.titulo)">
               <option value=""></option>
               <option value="Senhorita">Não quero divulgar</option>
               <option value="Senhorita">Tecnólogo(a)</option>
@@ -55,50 +55,54 @@
               <option value="Senhorita">Doutor(a)</option>
               <option value="Senhorita">Pós Doc</option>
             </select>
-            <div class="invalid-feedback">
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.titulo, 'required') && f.titulo.touched">
               Titulo é obrigatorio
             </div>
           </div>
+
           <div class="form-group col-sm-5">
             <label>Primeiro Nome</label>
-            <input type="text" class="form-control" formControlName="primeiroNome" [ngClass]="{'is-invalid': f.primeiroNome.errors && f.primeiroNome.touched}" />
+            <input type="text" class="form-control" formControlName="primeiroNome" [ngClass]="cv.Validator(f.primeiroNome)" />
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.primeiroNome, 'required') && f.primeiroNome.touched">
+              Primeiro nome é obrigatorio
+            </div>
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.primeiroNome, 'minlength') || cv.ValidatorError(f.primeiroNome, 'maxlength')">
+              Deve ter entre 2 e 50 caracteres
+            </div>
           </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.primeiroNome.hasError('required') && f.primeiroNome.touched}">
-            Primeiro nome é obrigatorio
-          </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.primeiroNome.hasError('minlength') || f.primeiroNome.hasError('maxlength')}">
-            Deve ter entre 2 e 50 caracteres
-          </div>
+
           <div class="form-group col-sm-5">
             <label>Último nome</label>
-            <input type="text" class="form-control" formControlName="ultimoNome" [ngClass]="{'is-invalid': f.ultimoNome.errors && f.ultimoNome.touched}" />
+            <input type="text" class="form-control" formControlName="ultimoNome" [ngClass]="cv.Validator(f.ultimoNome)" />
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.ultimoNome, 'required') && f.ultimoNome.touched">
+              Ultimo nome é obrigatorio
+            </div>
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.ultimoNome, 'minlength') || cv.ValidatorError(f.ultimoNome, 'maxlength')">
+              Deve ter entre 2 e 50 caracteres
+            </div>
+          </div>
 
-          </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.ultimoNome.hasError('required') && f.ultimoNome.touched}">
-            Ultimo nome é obrigatorio
-          </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.ultimoNome.hasError('minlength') || f.ultimoNome.hasError('maxlength')}">
-            Deve ter entre 2 e 50 caracteres
-          </div>
         </div>
         <div class="form-row">
           <div class="form-group col-sm-5">
             <label>E-mail</label>
-            <input type="text" class="form-control" formControlName="email" [ngClass]="{'is-invalid': f.email.errors && f.email.touched}" />
-            <div class="invalid-feedback" *ngIf="(f.email.hasError('required') || f.email.hasError('email')) && f.email.touched">
+            <input type="text" class="form-control" formControlName="email" [ngClass]="cv.Validator(f.email)" />
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.email, 'required') || cv.ValidatorError(f.email, 'email') && f.email.touched">
               Entre com um email válido
             </div>
           </div>
+
           <div class="form-group col-sm-4">
             <label>Telefone</label>
-            <input type="text" class="form-control" formControlName="telefone" [ngClass]="{'is-invalid': f.telefone.errors && f.telefone.touched}" />
+            <input type="text" class="form-control" formControlName="telefone" [ngClass]="cv.Validator(f.telefone)" />
             <div class="invalid-feedback">
               Telefone é obrigatorio
             </div>
           </div>
+
           <div class="form-group col-sm">
             <label>Função</label>
-            <select class="form-control" formControlName="funcao" [ngClass]="{'is-invalid': f.funcao.errors && f.funcao.touched}">
+            <select class="form-control" formControlName="funcao" [ngClass]="cv.Validator(f.funcao)">
               <option value=""></option>
               <option value="Participante">Participante</option>
               <option value="Palestrante">Palestrante</option>
@@ -107,40 +111,44 @@
               Função é obrigatorio
             </div>
           </div>
+
           <form-group class="col-12">
             <label>Descrição</label>
-            <input type="text" class="form-control" formControlName="descricao" [ngClass]="{'is-invalid': f.descricao.errors && f.descricao.touched}" />
-            <div class="invalid-feedback" *ngIf="f.descricao.hasError('required') && f.descricao.touched">
+            <input type="text" class="form-control" formControlName="descricao" [ngClass]="cv.Validator(f.descricao)" />
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.descricao, 'required') && f.descricao.touched">
               Descrição é obrigatoria
             </div>
-            <div class="invalid-feedback" *ngIf="f.descricao.hasError('minlength') || f.descricao.hasError('maxlength')">
+            <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.descricao, 'minlength') || cv.ValidatorError(f.descricao, 'maxlength')">
               Deve ter entre 2 e 50 caracteres
             </div>
           </form-group>
+
         </div>
         <div>
           <h3 class="pt-3 border-bottom">Mudar Senha</h3>
           <p>Caso mude de senha, preencha os campos abaixo:</p>
         </div>
+
         <div class="form-row">
           <div class="form-group col-sm">
             <label>Senha</label>
-            <input type="password" class="form-control" formControlName="senha" [ngClass]="{'is-invalid': f.senha.errors && f.senha.touched}" />
+            <input type="password" class="form-control" formControlName="senha" [ngClass]="cv.Validator(f.senha)" />
           </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.senha.hasError('required') && f.senha.touched}">
+          <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.senha, 'required') && f.senha.touched">
             Senha é obrigatorio
           </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.senha.hasError('minlength') || f.senha.hasError('maxlength')}">
+          <div class="invalid-feedback" *ngIf="cv.ValidatorError(f.senha, 'minlength') || cv.ValidatorError(f.senha, 'maxlength')">
             Deve ter entre 6 e 50 caracteres
           </div>
           <div class="form-group col-sm">
             <label>Confirmar Senha</label>
-            <input type="password" class="form-control" formControlName="confirmarSenha" [ngClass]="{'is-invalid': f.confirmarSenha.errors && f.confirmarSenha.touched}" />
+            <input type="password" class="form-control" formControlName="confirmarSenha" [ngClass]="cv.Validator(f.confirmarSenha)" />
           </div>
-          <div class="invalid-feedback" [ngClass]="{'d-block': f.confirmarSenha.hasError('mustMatch')}">
+          <div class="invalid-feedback" *ngIf="f.confirmarSenha.hasError('mustMatch')">
             Confirmação de senha incorreta
           </div>
         </div>
+
       </div>
     </div>
     <div class="card-footer">

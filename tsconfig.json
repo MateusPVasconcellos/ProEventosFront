@@ -2,6 +2,7 @@
 {
   "compileOnSave": false,
   "include": [
+    "src/**.ts",
     "src/main.ts",
     "src/polyfills.ts"
   ],
@@ -17,8 +18,8 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2017",
-    "module": "es2020",
+    "target": "ES2017",
+    "module": "commonjs",
     "lib": [
       "es2018",
       "dom"
@@ -33,5 +34,6 @@
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "experimentalDecorators": true
 }

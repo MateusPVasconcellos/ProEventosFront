@@ -2,7 +2,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "baseUrl": "./",
     "outDir": "./out-tsc/app",
+    "moduleResolution": "node",
     "types": []
   },
   "files": [

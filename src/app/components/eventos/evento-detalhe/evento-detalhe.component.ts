@@ -16,6 +16,7 @@ import { EventoService } from "../../../services/evento.service";
 export class EventoDetalheComponent implements OnInit {
   form!: FormGroup;
   evento: Evento;
+  estadoSalvar = 'post';
 
   constructor(
     private fb: FormBuilder,
@@ -45,6 +46,7 @@ export class EventoDetalheComponent implements OnInit {
     this.spinner.show();
     const eventoIdParam = this.router.snapshot.paramMap.get('id');
     if (eventoIdParam !== null) {
+      this.estadoSalvar = 'put';
       this.eventoService.getEventoById(Number(eventoIdParam)).subscribe(
         (evento: Evento) => {
           this.evento = { ...evento };
@@ -60,52 +62,75 @@ export class EventoDetalheComponent implements OnInit {
         },
       )
     }
+    this.spinner.hide();
   }
+
+  public salvarAlteracao(): void {
+    this.spinner.show()
+    if (this.form.valid) {
+      this.evento = (this.estadoSalvar === 'post')
+        ? { ...this.form.value }
+        : { id: this?.evento?.id, ...this.form.value };
+
+      this.eventoService[this.estadoSalvar](this.evento).subscribe(
+        () => this.toustr.success('Evento salvo', 'Sucesso'),
+        (error) => {
+          console.error(error);
+          this.spinner.hide();
+          this.toustr.error('Erro ao salvar evento', 'Erro');
+        },
+        () => {
+          this.spinner.hide();
+        },
+      );
+    }
+  }
+
 
   private validation(): void {
-    this.form = this.fb.group({
-      local: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(50),
-        ],
+  this.form = this.fb.group({
+    local: [
+      "",
+      [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50),
       ],
-      dataEvento: ["", Validators.required],
-      tema: [
-        "",
-        [
-          Validators.required,
-          Validators.minLength(4),
-          Validators.maxLength(50),
-        ],
+    ],
+    dataEvento: ["", Validators.required],
+    tema: [
+      "",
+      [
+        Validators.required,
+        Validators.minLength(4),
+        Validators.maxLength(50),
       ],
-      qtdPessoas: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^[0-9]*$"),
-          Validators.max(1200),
-        ],
+    ],
+    qtdPessoas: [
+      "",
+      [
+        Validators.required,
+        Validators.pattern("^[0-9]*$"),
+        Validators.max(1200),
       ],
-      imagemUrl: ["", Validators.required],
-      telefone: ["", Validators.required],
-      email: ["", [Validators.email, Validators.required]],
-    });
-  }
+    ],
+    imagemUrl: ["", Validators.required],
+    telefone: ["", Validators.required],
+    email: ["", [Validators.email, Validators.required]],
+  });
+}
 
   public resetForm(event: any): void {
-    event.preventDefault();
-    this.form.reset();
-  }
+  event.preventDefault();
+  this.form.reset();
+}
 
   public onSubmit(): void {
-    return;
-  }
+  return;
+}
 
-  ngOnInit(): void {
-    this.carregarEvento();
-    this.validation();
-  }
+ngOnInit(): void {
+  this.carregarEvento();
+  this.validation();
+}
 }

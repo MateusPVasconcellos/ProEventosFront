@@ -7,7 +7,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { DateTimeFormatPipe } from "./helpers/DateTimeFormat.pipe";
+import { DateFormatPipe } from "./helpers/DateFormat.pipe";
 import { EventoService } from "./services/evento.service";
+import { LoteService } from "./services/lote.service";
 import { CssValidatorService } from "@app/helpers/css-validator.service";
 
 import { ModalModule } from "ngx-bootstrap/modal";
@@ -21,6 +23,7 @@ import { ToastrModule } from "ngx-toastr";
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
+import { NgxCurrencyModule } from 'ngx-currency';
 
 
 import { ContatosComponent } from "./components/contatos/contatos.component";
@@ -43,6 +46,7 @@ defineLocale('pt-br', ptBrLocale);
     AppComponent,
     PalestrantesComponent,
     NavbarComponent,
+    DateFormatPipe,
     DateTimeFormatPipe,
     TituloComponent,
     EventosComponent,
@@ -75,9 +79,10 @@ defineLocale('pt-br', ptBrLocale);
       progressBar: true,
     }),
     NgxSpinnerModule,
+    NgxCurrencyModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [EventoService, CssValidatorService],
+  providers: [EventoService, CssValidatorService, LoteService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

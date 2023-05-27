@@ -6,6 +6,7 @@ import { BsLocaleService } from "ngx-bootstrap/datepicker";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../../environments/environment";
 import { CssValidatorService } from "../../../helpers/css-validator.service";
 import { Evento } from "../../../models/Evento";
 import { Lote } from "../../../models/Lote";
@@ -24,6 +25,8 @@ export class EventoDetalheComponent implements OnInit {
   eventoId: number;
   loteAtual = {id: 0, nome: '', indice: 0};
   modalRef: BsModalRef;
+  imagemUrl = 'assets/upload.png';
+  file: any;
 
   constructor(
     private fb: FormBuilder,
@@ -79,6 +82,9 @@ export class EventoDetalheComponent implements OnInit {
         (evento: Evento) => {
           this.evento = { ...evento };
           this.form.patchValue(this.evento);
+          if (this.evento.imagemUrl !== '') {
+            this.imagemUrl = environment.apiUrl + 'resources/images/' + this.evento.imagemUrl;
+          }
           this.evento.lote.forEach(lote => {
             this.lotes.push(this.criarLote(lote))
           })
@@ -122,8 +128,7 @@ export class EventoDetalheComponent implements OnInit {
       this.loteService.saveLote(this.eventoId, this.form.value.lotes)
         .subscribe(
           () => {
-            this.toustr.success('Sucesso ao salvar lote', 'Sucesso')
-            this.lotes.reset();
+            this.toustr.success('Sucesso ao salvar lote', 'Sucesso');
           },
           (error) => {
             console.error(error);
@@ -160,7 +165,7 @@ export class EventoDetalheComponent implements OnInit {
           Validators.max(1200),
         ],
       ],
-      imagemUrl: ["", Validators.required],
+      imagemUrl: [""],
       telefone: ["", Validators.required],
       email: ["", [Validators.email, Validators.required]],
       lotes: this.fb.array([]),
@@ -220,6 +225,30 @@ export class EventoDetalheComponent implements OnInit {
 
   public onSubmit(): void {
     return;
+  }
+
+  onFileChange(evento: any): void {
+    const reader = new FileReader()
+    this.file = evento.target.files;
+
+    reader.onload = (ev: any) => this.imagemUrl = ev.target.result
+    reader.readAsDataURL(this.file[0]);
+
+    this.uploadImagem();
+  }
+
+  uploadImagem(): void {
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+      () => {
+        this.carregarEvento();
+        this.toustr.success('Imagem atualizada', 'Sucesso');
+      },
+      (error: any) => {
+        this.toustr.success('Erro ao atualizar imagem', 'Erro');
+        console.log(error);
+      },
+    ).add(() => this.spinner.hide());
   }
 
   ngOnInit(): void {

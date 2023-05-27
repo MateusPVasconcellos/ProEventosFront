@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
+import { environment } from "../../../../environments/environment";
 import { Evento } from "../../../models/Evento";
 import { EventoService } from "../../../services/evento.service";
 
@@ -26,7 +27,7 @@ export class EventoListaComponent implements OnInit {
     private modalService: BsModalService,
     private toustr: ToastrService,
     private spinner: NgxSpinnerService,
-    private router: Router
+    private router: Router,
   ) { }
 
   public ngOnInit(): void {
@@ -89,6 +90,7 @@ export class EventoListaComponent implements OnInit {
         if (result.menssagem === 'Deletado') {
           this.toustr.success('Evento deletado', 'Deletado');
           this.getEventos();
+          window.location.reload();
         }
       },
       (error: any) => {
@@ -100,6 +102,10 @@ export class EventoListaComponent implements OnInit {
 
   decline(): void {
     this.modalRef?.hide();
+  }
+
+  public mostraImagem(imagemUrl: string): string {
+    return (imagemUrl !== "") ? `${environment.apiUrl}resources/images/${imagemUrl}` : 'assets/upload.png'
   }
 
   detalheEvento(id: number): void {
